@@ -1,4 +1,4 @@
-import { IsEmail, IsPhoneNumber } from "class-validator";
+import { IsEmail, IsNotEmpty, IsPhoneNumber } from "class-validator";
 
 export class CriarJogadorDto {
     @IsEmail()
@@ -7,5 +7,6 @@ export class CriarJogadorDto {
     @IsPhoneNumber("BR", { message: "Número de telefone inválido" })
     telefone: string;
 
+    @IsNotEmpty()
     nome: string;
 }
