@@ -21,6 +21,11 @@ export class CategoriasController {
         return await this.categoriasService.consultarTodasCategorias()
     }
 
+    @Get('/jogadores/:idJogador')
+    async verificarCategoriaJogador(@Param('idJogador') idJogador: string): Promise<Categoria> {
+        return await this.categoriasService.jogadorJaCadastradoCategoria(idJogador);
+    }
+
     @Get(':categoria')
     async consultarCategoriaPeloID(@Param('categoria') categoria: string): Promise<Categoria> {
         return await this.categoriasService.consultarCategoriaPeloID(categoria)
