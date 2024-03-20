@@ -6,6 +6,7 @@ import { CriarCategoriaDto } from './dtos/criar-categoria.dto';
 import { atualizarCategoriaDto } from './dtos/atualizar-categoria.dto';
 import { JogadoresService } from 'src/jogadores/jogadores.service';
 
+
 @Injectable()
 export class CategoriasService {
 
@@ -60,18 +61,18 @@ export class CategoriasService {
 
         if (!categoriaEncontrada) throw new NotFoundException(`Categoria ${categoria} não existe`)
 
-        // const jogadorEncontrado = await this.categoriaModel.findOne({ _id: idJogador }).exec()
-
         await this.jogadoresSerice.consultarJogador(idJogador)
         const jogadorJaCadastradoCategoria = await this.categoriaModel.find({ categoria }).where('jogadores').in(idJogador).exec()
         console.log(jogadorJaCadastradoCategoria)
-        // if (jogadorJaCadastradoCategoria.length > 0) throw new BadRequestException(`Jogador: ${idJogador} já participa da categoria ${categoria}`)
+        if (jogadorJaCadastradoCategoria.length > 0) throw new BadRequestException(`Jogador: ${idJogador} já participa da categoria ${categoria}`)
 
+        categoriaEncontrada.jogadores.push(idJogador)
 
-        // categoriaEncontrada.jogadores.push(idJogador)
-
-        // await this.categoriaModel.findOneAndUpdate({ categoria }, { $set: categoriaEncontrada }).exec()
+        await this.categoriaModel.findOneAndUpdate({ categoria }, { $set: categoriaEncontrada }).exec()
 
     }
 
+    async jogadorJaCadastradoCategoria(idJogador: string): Promise<Categoria> {
+        return await this.categoriaModel.findOne({ jogadores: idJogador }).exec()
+    }
 }
