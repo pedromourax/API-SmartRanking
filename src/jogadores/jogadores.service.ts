@@ -31,10 +31,12 @@ export class JogadoresService {
     }
 
     async consultarJogador(_id: string): Promise<Jogador> {
-        const jogadorEncontrado = await this.jogadorModel.findOne({ _id }).exec()
+
+        const jogadorEncontrado = await this.jogadorModel.findById(_id).exec()
         if (!jogadorEncontrado) throw new NotFoundException(`ID: '${_id}' não encontrado`)
 
         return jogadorEncontrado
+
     }
 
     async deletarJogador(_id: string): Promise<any> {
