@@ -7,7 +7,7 @@ export interface Desafio extends Document {
     status: DesafioStatus
     dataHoraSolicitacao: Date
     dataHoraResposta: Date
-    solicitante: string
+    solicitante: Jogador
     categoria: string
     jogadores: Jogador[]
     partida: Partida
