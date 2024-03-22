@@ -3,6 +3,7 @@ import { DesafiosService } from './desafios.service';
 import { criarDesafioDto } from './dto/criar-desafio.dto';
 import { atualizarDesafioDto } from './dto/atualizar-desafio.dto';
 import { ValidacaoParametrosPipe } from 'src/common/pipes/validacao-parametros.pipe';
+import { ValidacaoStatusDesafioPipe } from 'src/common/pipes/validacao-status-desafio.pipe';
 
 @Controller('api/v1/desafios')
 export class DesafiosController {
@@ -29,7 +30,7 @@ export class DesafiosController {
   @UsePipes(ValidationPipe)
   async atualizarDesafio(
     @Param('desafioId', ValidacaoParametrosPipe) desafioId: string,
-    @Body() atualizarDesafioDto: atualizarDesafioDto): Promise<void> {
+    @Body(ValidacaoStatusDesafioPipe) atualizarDesafioDto: atualizarDesafioDto): Promise<void> {
 
     await this.desafiosService.atualizarDesafio(desafioId, atualizarDesafioDto)
 
