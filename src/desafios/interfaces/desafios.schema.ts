@@ -13,9 +13,9 @@ export const DesafioSchema = new Schema({
     jogadores: [{
         type: Schema.Types.ObjectId,
         ref: "Jogador"
-    }]//,
-    // partida: {
-    //     Type: Schema.Types.ObjectId,
-    //     ref: "Partida"
-    // }
+    }],
+    partida: String/* {
+        Type: Schema.Types.ObjectId,
+        ref: "Partidas"
+    } */
 }, { timestamps: true, collection: 'desafios' })

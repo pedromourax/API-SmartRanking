@@ -10,5 +10,6 @@ import { CategoriasModule } from 'src/categorias/categorias.module';
   imports: [MongooseModule.forFeature([{ name: 'Desafio', schema: DesafioSchema }]), JogadoresModule, CategoriasModule],
   controllers: [DesafiosController],
   providers: [DesafiosService],
+  exports: [DesafiosService]
 })
 export class DesafiosModule { }

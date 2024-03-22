@@ -1,5 +1,6 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Desafio } from './interfaces/desafios.interface';
+import { Partida } from '../partidas/interfaces/partidas.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { criarDesafioDto } from './dto/criar-desafio.dto';
@@ -8,6 +9,7 @@ import { CategoriasService } from 'src/categorias/categorias.service';
 import { DesafioStatus } from './interfaces/desafio-status.enum';
 import { sub } from 'date-fns';
 import { atualizarDesafioDto } from './dto/atualizar-desafio.dto';
+import { atribuirDesafioPartidaDto } from '../partidas/dto/atribuir-desafio-partida.dto';
 
 @Injectable()
 export class DesafiosService {
@@ -69,13 +71,6 @@ export class DesafiosService {
 
         if (!desafio) throw new BadRequestException(`Desafio ${desafioId} inexistente`)
 
-        if (status && status == DesafioStatus.REALIZADO || status == DesafioStatus.PENDENTE) {
-            throw new BadRequestException(`Status inválido para o desafio ${desafioId}`)
-        }
-
-        // TODO: nao permitir que o usuario defina a data para anterior ao hora atual
-
-
         if (dataHoraDesafio) {
             const data = new Date(dataHoraDesafio)
             if (data < sub(new Date(), { hours: 3 }))
@@ -94,6 +89,15 @@ export class DesafiosService {
         await this.DesafioModel.findOneAndUpdate({ _id: desafioId }, { $set: desafio }).exec()
     }
 
+    async consultarDesafio(desafioId: string): Promise<Desafio> {
+        const desafio = await this.DesafioModel.findById(desafioId)
+        if (!desafio) throw new NotFoundException(`Desafio ${desafioId} inexistente`)
+        return desafio
+    }
 
+
+    async definirPartidaRealizada(desafioId, partida) {
+        await this.DesafioModel.findOneAndUpdate({ _id: desafioId }, { $set: { status: DesafioStatus.REALIZADO, partida: partida } }).exec()
+    }
 
 }
